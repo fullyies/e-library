@@ -2,6 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\PeminjamanController;
+
+Route::get('/', [DashboardController::class,'index']);
+
+Route::resource('kategori',KategoriController::class);
+
+Route::resource('buku',BukuController::class);
+
+Route::resource('peminjaman',PeminjamanController::class);
