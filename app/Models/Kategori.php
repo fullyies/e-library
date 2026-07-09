@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
 {
-      protected $table = 'kategori';
+    protected $table = 'kategori';
 
     protected $fillable = [
         'nama_kategori'
@@ -18,4 +18,4 @@ class Kategori extends Model
     }
 }
 
-//1 kategori memiliki banyak buku
+// 1 kategori memiliki banyak buku (one to many relationship)
