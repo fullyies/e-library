@@ -3,7 +3,19 @@
 @section('content')
 
 <h2>Edit Buku</h2>
+@if($errors->any())
 
+    <ul style="color:red">
+
+        @foreach($errors->all() as $error)
+
+            <li>{{ $error }}</li>
+
+        @endforeach
+
+    </ul>
+
+@endif
 <form action="{{ route('buku.update',$buku->id) }}" method="POST">
 
     @csrf

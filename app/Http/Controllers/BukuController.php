@@ -19,13 +19,20 @@ class BukuController extends Controller
 {
     $kategoris = Kategori::all();
 
-    $lastBook = Buku::latest()->first();
+    $lastBook = Buku::orderBy('id', 'desc')->first();
 
-    if ($lastBook) {
-        $number = (int) substr($lastBook->kode_buku, 2);
-        $kode_buku = 'BK' . str_pad($number + 1, 3, '0', STR_PAD_LEFT);
-    } else {
+    if (!$lastBook) {
+
         $kode_buku = 'BK001';
+
+    } else {
+
+        $angka = (int) substr($lastBook->kode_buku, 2);
+
+        $angka++;
+
+        $kode_buku = 'BK' . sprintf("%03d", $angka);
+
     }
 
     return view('buku.create', compact('kategoris', 'kode_buku'));
