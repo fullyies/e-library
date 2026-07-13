@@ -7,18 +7,21 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman login
+    // Halaman Login
     public function index()
     {
         return view('auth.login');
     }
 
-    // Proses login
+    // Proses Login
     public function login(Request $request)
     {
         $request->validate([
             'username' => 'required',
             'password' => 'required'
+        ],[
+            'username.required' => 'Username wajib diisi',
+            'password.required' => 'Password wajib diisi'
         ]);
 
         $credentials = [
@@ -26,18 +29,15 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        if (Auth::attempt($credentials)) {
+        if(Auth::attempt($credentials)){
 
             $request->session()->regenerate();
 
-            if (Auth::user()->role == 'admin') {
-                return redirect('/dashboard/admin');
-            }
+            return redirect()->route('dashboard');
 
-            return redirect('/dashboard/anggota');
         }
 
-        return back()->with('error', 'Username atau Password salah!');
+        return back()->with('error','Username atau Password salah!');
     }
 
     // Logout

@@ -9,13 +9,13 @@
 
 <body>
 
-<h2>Login E-Library</h2>
+<h2>LOGIN E-LIBRARY</h2>
 
 @if(session('error'))
 
 <p style="color:red">
 
-    {{ session('error') }}
+{{ session('error') }}
 
 </p>
 
@@ -23,51 +23,54 @@
 
 <form action="{{ url('/login') }}" method="POST">
 
-    @csrf
+@csrf
 
-    <table>
+<table>
 
-        <tr>
+<tr>
 
-            <td>Username</td>
+<td>Username</td>
 
-            <td>
+<td>
 
-                <input type="text" name="username">
+<input type="text"
+       name="username"
+       value="{{ old('username') }}">
 
-            </td>
+</td>
 
-        </tr>
+</tr>
 
-        <tr>
+<tr>
 
-            <td>Password</td>
+<td>Password</td>
 
-            <td>
+<td>
 
-                <input type="password" name="password">
+<input type="password"
+       name="password">
 
-            </td>
+</td>
 
-        </tr>
+</tr>
 
-        <tr>
+<tr>
 
-            <td></td>
+<td></td>
 
-            <td>
+<td>
 
-                <button type="submit">
+<button type="submit">
 
-                    Login
+Login
 
-                </button>
+</button>
 
-            </td>
+</td>
 
-        </tr>
+</tr>
 
-    </table>
+</table>
 
 </form>
 

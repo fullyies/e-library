@@ -2,12 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Buku;
+use App\Models\Kategori;
+use App\Models\Peminjaman;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        $totalBuku = Buku::count();
+
+        $totalKategori = Kategori::count();
+
+        $totalAnggota = User::where('role','anggota')->count();
+
+        $totalPeminjaman = Peminjaman::count();
+
+        return view('dashboard.index', compact(
+            'totalBuku',
+            'totalKategori',
+            'totalAnggota',
+            'totalPeminjaman'
+        ));
     }
 }
