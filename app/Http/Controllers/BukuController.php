@@ -2,63 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class BukuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $bukus = Buku::with('kategori')->get();
+
+        return view('buku.index', compact('bukus'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $kategoris = Kategori::all();
+
+        return view('buku.create', compact('kategoris'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        Buku::create([
+            'kategori_id'   => $request->kategori_id,
+            'kode_buku'     => $request->kode_buku,
+            'judul'         => $request->judul,
+            'penulis'       => $request->penulis,
+            'penerbit'      => $request->penerbit,
+            'tahun_terbit'  => $request->tahun_terbit,
+            'stok'          => $request->stok,
+        ]);
+
+        return redirect()->route('buku.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $buku = Buku::findOrFail($id);
+        $kategoris = Kategori::all();
+
+        return view('buku.edit', compact('buku','kategoris'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $buku = Buku::findOrFail($id);
+
+        $buku->update([
+            'kategori_id'   => $request->kategori_id,
+            'kode_buku'     => $request->kode_buku,
+            'judul'         => $request->judul,
+            'penulis'       => $request->penulis,
+            'penerbit'      => $request->penerbit,
+            'tahun_terbit'  => $request->tahun_terbit,
+            'stok'          => $request->stok,
+        ]);
+
+        return redirect()->route('buku.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $buku = Buku::findOrFail($id);
+
+        $buku->delete();
+
+        return redirect()->route('buku.index');
     }
 }
