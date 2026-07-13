@@ -30,8 +30,8 @@ class Peminjaman extends Model
         return $this->belongsTo(User::class); // Setiap peminjaman dimiliki oleh satu user (one to one relationship)
     }
 
-    public function detail()
-    {
-        return $this->hasMany(DetailPeminjaman::class); // Setiap peminjaman dapat memiliki banyak detail peminjaman (one to many relationship)
-    }
+    public function detailPeminjaman()
+{
+    return $this->hasMany(DetailPeminjaman::class); // Setiap peminjaman dapat memiliki banyak detail peminjaman (one to many relationship)
+}
 }

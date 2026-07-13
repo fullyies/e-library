@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
-
     public function index()
     {
-        return view('kategori.index'); // sesuai folder resources/views/kategori/index.blade.php
+        $kategoris = Kategori::all();
+
+        return view('kategori.index', compact('kategoris'));
     }
+
     public function create()
     {
         return view('kategori.create');
@@ -19,16 +21,11 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_kategori'=>'required|max:100'
-        ]);
-
         Kategori::create([
-            'nama_kategori'=>$request->nama_kategori
+            'nama_kategori' => $request->nama_kategori
         ]);
 
-        return redirect()->route('kategori.index')
-                ->with('success','Kategori berhasil ditambahkan');
+        return redirect()->route('kategori.index');
     }
 
     public function edit(string $id)
@@ -40,18 +37,13 @@ class KategoriController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'nama_kategori'=>'required|max:100'
-        ]);
-
         $kategori = Kategori::findOrFail($id);
 
         $kategori->update([
-            'nama_kategori'=>$request->nama_kategori
+            'nama_kategori' => $request->nama_kategori
         ]);
 
-        return redirect()->route('kategori.index')
-                ->with('success','Kategori berhasil diubah');
+        return redirect()->route('kategori.index');
     }
 
     public function destroy(string $id)
@@ -60,7 +52,6 @@ class KategoriController extends Controller
 
         $kategori->delete();
 
-        return redirect()->route('kategori.index')
-                ->with('success','Kategori berhasil dihapus');
+        return redirect()->route('kategori.index');
     }
 }

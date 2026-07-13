@@ -8,31 +8,29 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('buku', function (Blueprint $table) {
+       Schema::create('buku', function (Blueprint $table) {
 
-            $table->id();
+    $table->id();
 
-            $table->foreignId('kategori_id')
-                  ->constrained('kategori')
-                  ->cascadeOnDelete();
+    $table->foreignId('kategori_id')
+          ->constrained('kategori')
+          ->cascadeOnDelete();
 
-            $table->string('judul');
+    $table->string('kode_buku',20)->unique();
 
-            $table->string('penulis');
+    $table->string('judul');
 
-            $table->string('penerbit');
+    $table->string('penulis');
 
-            $table->year('tahun_terbit');
+    $table->string('penerbit');
 
-            $table->string('isbn')->unique();
+    $table->year('tahun_terbit');
 
-            $table->integer('stok')->default(0);
+    $table->integer('stok');
 
-            $table->string('cover')->nullable();
+    $table->timestamps();
 
-            $table->timestamps();
-
-        });
+});
     }
 
     public function down(): void
