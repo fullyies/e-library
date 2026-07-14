@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Buku;
+use App\Models\Peminjaman;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
@@ -10,17 +12,28 @@ class PeminjamanController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    $peminjaman = Peminjaman::with('user')
+                    ->latest()
+                    ->get();
+
+    return view('peminjaman.index', compact('peminjaman'));
+}
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+   public function create()
+{
+    $anggota = User::where('role','anggota')->get();
+
+    $buku = Buku::all();
+
+    return view('peminjaman.create', compact(
+        'anggota',
+        'buku'
+    ));
+}
 
     /**
      * Store a newly created resource in storage.
