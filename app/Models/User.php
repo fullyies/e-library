@@ -29,4 +29,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relasi
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class);
+    }
 }
