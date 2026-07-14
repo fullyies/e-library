@@ -4,51 +4,37 @@
 
 <h2>Dashboard</h2>
 
-<h4>
-Selamat Datang,
-{{ Auth::user()->name }}
-</h4>
-
 <hr>
 
 @if(Auth::user()->role == 'admin')
 
-    <h3>Dashboard Admin</h3>
+    <a href="{{ route('user.index') }}">
+        Data User
+    </a>
 
-    <table border="1" cellpadding="10">
+    <br><br>
 
-        <tr>
-            <td>Total Buku</td>
-            <td>{{ $totalBuku }}</td>
-        </tr>
+    <a href="{{ route('kategori.index') }}">
+        Data Kategori
+    </a>
 
-        <tr>
-            <td>Total Kategori</td>
-            <td>{{ $totalKategori }}</td>
-        </tr>
+    <br><br>
 
-        <tr>
-            <td>Total Anggota</td>
-            <td>{{ $totalAnggota }}</td>
-        </tr>
+    <a href="{{ route('buku.index') }}">
+        Data Buku
+    </a>
 
-        <tr>
-            <td>Total Peminjaman</td>
-            <td>{{ $totalPeminjaman }}</td>
-        </tr>
+    <br><br>
 
-    </table>
+    <a href="{{ route('peminjaman.index') }}">
+        Data Peminjaman
+    </a>
 
-@endif
+@else
 
-
-@if(Auth::user()->role == 'anggota')
-
-    <h3>Dashboard Anggota</h3>
-
-    <p>Total Buku :</p>
-
-    <h2>{{ $totalBuku }}</h2>
+    <a href="{{ route('buku.index') }}">
+        Lihat Buku
+    </a>
 
 @endif
 

@@ -11,36 +11,33 @@ class BukuSeeder extends Seeder
     {
 
         Buku::create([
+            'kode_buku' => 'BK0001',
             'kategori_id'=>1,
             'judul'=>'Laravel 13 Dasar',
             'penulis'=>'Budi Santoso',
             'penerbit'=>'Informatika',
             'tahun_terbit'=>2025,
-            'isbn'=>'9781111111111',
-            'stok'=>10,
-            'cover'=>null
+            'stok'=>10
         ]);
 
         Buku::create([
+            'kode_buku' => 'BK0002',
             'kategori_id'=>1,
             'judul'=>'Pemrograman PHP Modern',
             'penulis'=>'Andi Wijaya',
             'penerbit'=>'Gramedia',
             'tahun_terbit'=>2024,
-            'isbn'=>'9782222222222',
-            'stok'=>7,
-            'cover'=>null
+            'stok'=>7
         ]);
 
         Buku::create([
+            'kode_buku' => 'BK0003',
             'kategori_id'=>2,
             'judul'=>'Laskar Pelangi',
             'penulis'=>'Andrea Hirata',
             'penerbit'=>'Bentang',
             'tahun_terbit'=>2005,
-            'isbn'=>'9783333333333',
-            'stok'=>15,
-            'cover'=>null
+            'stok'=>15
         ]);
 
     }
