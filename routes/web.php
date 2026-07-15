@@ -34,7 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Riwayat peminjaman anggota
-    Route::get('/riwayat', [PeminjamanController::class, 'riwayat'])->name('riwayat');
+    Route::get('/riwayat', [PeminjamanController::class,'riwayat'])->name('riwayat');
+
+    // Buku yang bisa dilihat semua user login
+    Route::resource('buku', BukuController::class)->only(['index','show']);
 });
 
 /*
@@ -43,12 +46,11 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])->group(function () {
-
     Route::resource('user', UserController::class);
     Route::resource('kategori', KategoriController::class);
 
-    // Admin bisa CRUD buku selain index & show
-    Route::resource('buku', BukuController::class)->except(['index', 'show']);
+    // Admin bisa CRUD buku (selain index & show)
+    Route::resource('buku', BukuController::class)->except(['index','show']);
 
     // CRUD peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
@@ -59,15 +61,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Pengembalian buku
     Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Buku yang boleh diakses semua user login
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->group(function () {
-    Route::resource('buku', BukuController::class)
-        ->only(['index', 'show'])
-        ->where(['buku' => '[0-9]+']);
 });
