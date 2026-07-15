@@ -10,11 +10,14 @@
 
 <h2>Data Buku</h2>
 
-<a href="{{ route('buku.create') }}">
-    Tambah Buku
+@if(Auth::user()->role == 'admin')
+    <a href="{{ route('buku.create') }}" class="btn btn-primary">
+        Tambah Buku
+    </a>
+@endif
+<a href="{{ route('dashboard') }}" class="btn btn-secondary">
+    Kembali
 </a>
-
-<br><br>
 
 <table border="1" cellpadding="10">
 
@@ -27,7 +30,9 @@
         <th>Penerbit</th>
         <th>Tahun</th>
         <th>Stok</th>
-        <th>Aksi</th>
+       @if(Auth::user()->role == 'admin')
+    <th>Aksi</th>
+@endif
     </tr>
 
     @foreach($bukus as $item)
@@ -45,26 +50,30 @@
 
         <td>
 
-            <a href="{{ route('buku.edit',$item->id) }}">
-                Edit
-            </a>
+          @if(Auth::user()->role == 'admin')
 
-            |
 
-            <form action="{{ route('buku.destroy',$item->id) }}"
-                  method="POST"
-                  style="display:inline">
+    <a href="{{ route('buku.edit',$item->id) }}"
+        class="btn btn-warning btn-sm">
+        Edit
+    </a>
 
-                @csrf
-                @method('DELETE')
+    <form action="{{ route('buku.destroy',$item->id) }}"
+          method="POST"
+          style="display:inline">
 
-                <button onclick="return confirm('Hapus buku ini?')">
-                    Hapus
-                </button>
+        @csrf
+        @method('DELETE')
 
-            </form>
+        <button class="btn btn-danger btn-sm">
+            Hapus
+        </button>
 
-        </td>
+    </form>
+
+</td>
+@endif
+
 
     </tr>
 

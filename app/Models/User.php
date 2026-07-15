@@ -30,9 +30,5 @@ class User extends Authenticatable
         ];
     }
 
-    // Relasi
-    public function peminjaman()
-    {
-        return $this->hasMany(Peminjaman::class);
-    }
 }
+

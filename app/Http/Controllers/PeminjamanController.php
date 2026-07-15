@@ -3,115 +3,180 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
-use App\Models\User;
 use App\Models\Peminjaman;
+use App\Models\User;
 use App\Models\DetailPeminjaman;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB; //db transaction
+
 
 class PeminjamanController extends Controller
 {
     public function index()
-    {
-        $peminjamans = Peminjaman::with([
-            'user',
-            'detailPeminjaman.buku'
-        ])->get();
 
-        return view('peminjaman.index', compact('peminjamans'));
+{
+    $peminjaman = Peminjaman::with('user')
+                    ->latest()
+                    ->get();
+
+    return view('peminjaman.index', compact('peminjaman'));
+}
+
+    /**
+     * Show the form for creating a new resource.
+     */
+   public function create()
+{
+    $anggota = User::where('role','anggota')->get();
+
+    $buku = Buku::all();
+
+    return view('peminjaman.create', compact(
+        'anggota',
+        'buku'
+    ));
+}
+
+    /**
+     * Store a newly created resource in storage.
+     */
+   public function store(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required',
+        'tanggal_pinjam' => 'required',
+        'tanggal_kembali' => 'required'
+    ]);
+
+    // Generate kode peminjaman otomatis
+    $last = Peminjaman::latest()->first();
+
+    if ($last) {
+        $nomor = (int) substr($last->kode_pinjam, 3) + 1;
+    } else {
+        $nomor = 1;
     }
 
+    $kode = 'PJM' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
 
-    public function create()
-    {
-        $users = User::where('role', 'anggota')->get();
+    $peminjaman = Peminjaman::create([
+        'kode_pinjam' => $kode,
+        'user_id' => $request->user_id,
+        'tanggal_pinjam' => $request->tanggal_pinjam,
+        'tanggal_kembali' => $request->tanggal_kembali,
+        'status' => 'Dipinjam'
+    ]);
 
-        $bukus = Buku::where('stok', '>', 0)->get();
+    return redirect()->route('peminjaman.show', $peminjaman->id);
+}
 
+    /**
+     * Display the specified resource.
+     */
 
-        $last = Peminjaman::latest()->first();
+public function show(string $id)
+{
+    $peminjaman = Peminjaman::with('user')->findOrFail($id);
 
+    $detail = DetailPeminjaman::with('buku')
+                ->where('peminjaman_id', $id)
+                ->get();
 
-        if (!$last) {
+    $buku = Buku::where('stok', '>', 0)->get();
 
-            $kode_pinjam = 'PJ001';
+    // Hitung total buku yang dipinjam
+    $total = DetailPeminjaman::where('peminjaman_id', $id)
+                ->sum('jumlah');
 
-        } else {
+    return view('peminjaman.show', compact(
+        'peminjaman',
+        'detail',
+        'buku',
+        'total'
+    ));
+}
 
-            $angka = (int) substr($last->kode_pinjam, 2);
+//ini tanpa db transaction, jika ada error di tengah proses, stok buku akan tetap berkurang
+/*public function kembali($id)
+{
+    // Ambil transaksi
+    $peminjaman = Peminjaman::findOrFail($id);
 
-            $kode_pinjam = 'PJ' . sprintf('%03d', $angka + 1);
+    // Cek apakah sudah dikembalikan
+    if ($peminjaman->status == 'Dikembalikan') {
+
+        return redirect()
+                ->back()
+                ->with('error','Buku sudah dikembalikan.');
+
+    }
+
+    // Ambil semua detail buku
+    $detail = DetailPeminjaman::where(
+        'peminjaman_id',
+        $id
+    )->get();
+
+    // Kembalikan stok
+    foreach($detail as $item){
+
+        $buku = Buku::find($item->buku_id);
+
+        $buku->stok += $item->jumlah;
+
+        $buku->save();
+
+    }
+
+    // Ubah status transaksi
+    $peminjaman->status = 'Dikembalikan';
+
+    $peminjaman->save();
+
+    return redirect()
+            ->route('peminjaman.index')
+            ->with(
+                'success',
+                'Peminjaman berhasil dikembalikan.'
+            );
+} */
+
+//ini dengan db transaction
+public function kembali($id)
+{
+    DB::transaction(function () use ($id) {
+
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        $detail = DetailPeminjaman::where(
+            'peminjaman_id',
+            $id
+        )->get();
+
+        foreach ($detail as $item) {
+
+            $buku = Buku::find($item->buku_id);
+
+            $buku->stok += $item->jumlah;
+
+            $buku->save();
 
         }
 
+        $peminjaman->status = 'Dikembalikan';
 
-        return view('peminjaman.create', compact(
-            'users',
-            'bukus',
-            'kode_pinjam'
-        ));
-    }
+        $peminjaman->save();
 
+    });
 
-
-    public function store(Request $request)
-    {
-        DB::transaction(function () use ($request) {
-
-
-            $peminjaman = Peminjaman::create([
-
-                'kode_pinjam' => $request->kode_pinjam,
-
-                'user_id' => $request->user_id,
-
-                'tanggal_pinjam' => $request->tanggal_pinjam,
-
-                'tanggal_kembali' => $request->tanggal_kembali,
-
-                'status' => 'Dipinjam'
-
-            ]);
-
-
-
-            foreach ($request->buku_id as $i => $buku_id) {
-
-
-                DetailPeminjaman::create([
-
-                    'peminjaman_id' => $peminjaman->id,
-
-                    'buku_id' => $buku_id,
-
-                    'jumlah' => $request->jumlah[$i]
-
-                ]);
-
-
-
-                $buku = Buku::findOrFail($buku_id);
-
-
-                $buku->stok -= $request->jumlah[$i];
-
-
-                $buku->save();
-
-            }
-
-
-        });
-
-
-        return redirect()
+    return redirect()
             ->route('peminjaman.index')
-            ->with('success', 'Data peminjaman berhasil disimpan');
+            ->with('success','Buku berhasil dikembalikan.');
+}
 
-    }
-
-
-
+    /**
+     * Show the form for editing the specified resource.
+     */
 
     public function edit(string $id)
     {
