@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Buku;
 use App\Models\Peminjaman;
 use App\Models\User;
@@ -8,12 +9,11 @@ use App\Models\DetailPeminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; //db transaction
 
+
 class PeminjamanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
+
 {
     $peminjaman = Peminjaman::with('user')
                     ->latest()
@@ -177,24 +177,86 @@ public function kembali($id)
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit(string $id)
     {
-        //
+        $peminjaman = Peminjaman::findOrFail($id);
+
+
+        return view('peminjaman.edit', compact('peminjaman'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+
+
+
     public function update(Request $request, string $id)
     {
-        //
+        $peminjaman = Peminjaman::findOrFail($id);
+
+
+
+        $peminjaman->update([
+
+            'status' => $request->status
+
+        ]);
+
+
+
+        return redirect()
+            ->route('peminjaman.index')
+            ->with('success', 'Status peminjaman berhasil diperbarui');
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
+
+
+
     public function destroy(string $id)
     {
-        //
+
+        DB::transaction(function () use ($id) {
+
+
+            $peminjaman = Peminjaman::with('detailPeminjaman')
+                ->findOrFail($id);
+
+
+
+            foreach ($peminjaman->detailPeminjaman as $detail) {
+
+
+                $buku = Buku::find($detail->buku_id);
+
+
+
+                if ($buku) {
+
+
+                    $buku->stok += $detail->jumlah;
+
+
+                    $buku->save();
+
+
+                }
+
+            }
+
+
+
+            $peminjaman->delete();
+
+
+        });
+
+
+
+        return redirect()
+            ->route('peminjaman.index')
+            ->with('success', 'Data peminjaman berhasil dihapus');
+
     }
 }

@@ -1,24 +1,37 @@
-@extends('layout.app')
+
+@extends('layout.main')
 
 @section('content')
 
-<h2>Tambah Peminjaman</h2>
+<div class="container">
+
+<h3>Tambah Peminjaman</h3>
 
 <form action="{{ route('peminjaman.store') }}" method="POST">
 
 @csrf
 
-<table>
+<div class="mb-3">
 
-<tr>
+<label>Kode Pinjam</label>
 
-<td>Anggota</td>
+<input type="text"
+name="kode_pinjam"
+class="form-control"
+value="{{ $kode_pinjam }}"
+readonly>
 
-<td>
+</div>
 
-<select name="user_id">
+<div class="mb-3">
 
-@foreach($anggota as $user)
+<label>Anggota</label>
+
+<select name="user_id" class="form-control">
+
+<option value="">-- Pilih Anggota --</option>
+
+@foreach($users as $user)
 
 <option value="{{ $user->id }}">
 
@@ -30,55 +43,99 @@
 
 </select>
 
-</td>
+</div>
 
-</tr>
+<div class="mb-3">
 
-<tr>
+<label>Tanggal Pinjam</label>
 
-<td>Tanggal Pinjam</td>
-
-<td>
-
-<input
-type="date"
+<input type="date"
 name="tanggal_pinjam"
-value="{{ date('Y-m-d') }}">
+class="form-control">
 
-</td>
+</div>
 
-</tr>
+<div class="mb-3">
 
-<tr>
+<label>Tanggal Kembali</label>
 
-<td>Tanggal Kembali</td>
+<input type="date"
+name="tanggal_kembali"
+class="form-control">
 
-<td>
-
-<input
-type="date"
-name="tanggal_kembali">
-
-</td>
-
-</tr>
-
-</table>
+</div>
 
 <hr>
 
-<h3>Daftar Buku</h3>
+<h5>Daftar Buku</h5>
 
-<p>
-(Tahap berikutnya kita buat tabel detail peminjaman di sini)
-</p>
+<table class="table table-bordered">
 
-<button type="submit">
+<thead>
+
+<tr>
+
+<th>Buku</th>
+
+<th>Jumlah</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<select name="buku_id[]" class="form-control">
+
+@foreach($bukus as $buku)
+
+<option value="{{ $buku->id }}">
+
+{{ $buku->judul }}
+
+</option>
+
+@endforeach
+
+</select>
+
+</td>
+
+<td>
+
+<input type="number"
+name="jumlah[]"
+class="form-control"
+value="1"
+min="1">
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<button class="btn btn-success">
 
 Simpan
 
 </button>
 
+<a href="{{ route('peminjaman.index') }}"
+class="btn btn-secondary">
+
+Kembali
+
+</a>
+
 </form>
+
+</div>
 
 @endsection
