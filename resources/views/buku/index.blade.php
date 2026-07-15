@@ -8,68 +8,126 @@
 
 @section('content')
 
-<h2>Data Buku</h2>
+<div class="container-fluid">
 
-<a href="{{ route('buku.create') }}">
-    Tambah Buku
-</a>
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
-<br><br>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-book"></i>
+            Data Buku
+        </h2>
 
-<table border="1" cellpadding="10">
+        <a href="{{ route('buku.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Tambah Buku
+        </a>
+    </div>
 
-    <tr>
-        <th>No</th>
-        <th>Kode</th>
-        <th>Judul</th>
-        <th>Kategori</th>
-        <th>Penulis</th>
-        <th>Penerbit</th>
-        <th>Tahun</th>
-        <th>Stok</th>
-        <th>Aksi</th>
-    </tr>
+    <div class="card shadow-sm">
 
-    @foreach($bukus as $item)
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Daftar Buku</h5>
+        </div>
 
-    <tr>
+        <div class="card-body">
 
-        <td>{{ $loop->iteration }}</td>
-        <td>{{ $item->kode_buku }}</td>
-        <td>{{ $item->judul }}</td>
-        <td>{{ $item->kategori->nama_kategori }}</td>
-        <td>{{ $item->penulis }}</td>
-        <td>{{ $item->penerbit }}</td>
-        <td>{{ $item->tahun_terbit }}</td>
-        <td>{{ $item->stok }}</td>
+            <div class="table-responsive">
 
-        <td>
+                <table class="table table-bordered table-hover align-middle">
 
-            <a href="{{ route('buku.edit',$item->id) }}">
-                Edit
-            </a>
+                    <thead class="table-light">
 
-            |
+                        <tr>
+                            <th>No</th>
+                            <th>Kode</th>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Penulis</th>
+                            <th>Penerbit</th>
+                            <th>Tahun</th>
+                            <th>Stok</th>
+                            <th width="180">Aksi</th>
+                        </tr>
 
-            <form action="{{ route('buku.destroy',$item->id) }}"
-                  method="POST"
-                  style="display:inline">
+                    </thead>
 
-                @csrf
-                @method('DELETE')
+                    <tbody>
 
-                <button onclick="return confirm('Hapus buku ini?')">
-                    Hapus
-                </button>
+                        @foreach($bukus as $item)
 
-            </form>
+                        <tr>
 
-        </td>
+                            <td>{{ $loop->iteration }}</td>
 
-    </tr>
+                            <td>{{ $item->kode_buku }}</td>
 
-    @endforeach
+                            <td>{{ $item->judul }}</td>
 
-</table>
+                            <td>{{ $item->kategori->nama_kategori }}</td>
+
+                            <td>{{ $item->penulis }}</td>
+
+                            <td>{{ $item->penerbit }}</td>
+
+                            <td>{{ $item->tahun_terbit }}</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    {{ $item->stok }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <a href="{{ route('buku.edit',$item->id) }}"
+                                    class="btn btn-warning btn-sm">
+
+                                    <i class="fas fa-edit"></i>
+
+                                    Edit
+
+                                </a>
+
+                                <form action="{{ route('buku.destroy',$item->id) }}"
+                                    method="POST"
+                                    class="d-inline">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        onclick="return confirm('Hapus buku ini?')"
+                                        class="btn btn-danger btn-sm">
+
+                                        <i class="fas fa-trash"></i>
+
+                                        Hapus
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 @endsection

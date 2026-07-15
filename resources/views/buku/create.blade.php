@@ -2,123 +2,121 @@
 
 @section('content')
 
-<h2>Tambah Buku</h2>
-@if($errors->any())
+<div class="container-fluid">
 
-    <ul style="color:red">
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-plus-circle"></i>
+            Tambah Data Buku
+        </h2>
+    </div>
 
-        @foreach($errors->all() as $error)
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-            <li>{{ $error }}</li>
+    <div class="card shadow-sm">
 
-        @endforeach
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Form Tambah Buku</h5>
+        </div>
 
-    </ul>
+        <div class="card-body">
 
-@endif
-<form action="{{ route('buku.store') }}" method="POST">
+            <form action="{{ route('buku.store') }}" method="POST">
 
-    @csrf
+                @csrf
 
-    <table>
+                <div class="mb-3">
+                    <label class="form-label">Kode Buku</label>
+                    <input type="text"
+                        class="form-control"
+                        name="kode_buku"
+                        value="{{ $kode_buku }}"
+                        readonly>
+                </div>
 
-        <tr>
-            <td>Kode Buku</td>
-            <td>
-                <input type="text"
-                       name="kode_buku"
-                       value="{{ $kode_buku }}"
-                       readonly>
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Judul Buku</label>
+                    <input type="text"
+                        class="form-control"
+                        name="judul">
+                </div>
 
-        <tr>
-            <td>Judul Buku</td>
-            <td>
-                <input type="text"
-                       name="judul">
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Kategori</label>
 
-        <tr>
-            <td>Kategori</td>
+                    <select name="kategori_id" class="form-select">
 
-            <td>
+                        @foreach($kategoris as $kategori)
 
-                <select name="kategori_id">
+                            <option value="{{ $kategori->id }}">
+                                {{ $kategori->nama_kategori }}
+                            </option>
 
-                    @foreach($kategoris as $kategori)
+                        @endforeach
 
-                    <option value="{{ $kategori->id }}">
+                    </select>
 
-                        {{ $kategori->nama_kategori }}
+                </div>
 
-                    </option>
+                <div class="mb-3">
+                    <label class="form-label">Penulis</label>
 
-                    @endforeach
+                    <input type="text"
+                        class="form-control"
+                        name="penulis">
+                </div>
 
-                </select>
+                <div class="mb-3">
+                    <label class="form-label">Penerbit</label>
 
-            </td>
+                    <input type="text"
+                        class="form-control"
+                        name="penerbit">
+                </div>
 
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Tahun Terbit</label>
 
-        <tr>
-            <td>Penulis</td>
-            <td>
-                <input type="text"
-                       name="penulis">
-            </td>
-        </tr>
+                    <input type="number"
+                        class="form-control"
+                        name="tahun_terbit">
+                </div>
 
-        <tr>
-            <td>Penerbit</td>
-            <td>
-                <input type="text"
-                       name="penerbit">
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Stok</label>
 
-        <tr>
-            <td>Tahun Terbit</td>
-            <td>
-                <input type="number"
-                       name="tahun_terbit">
-            </td>
-        </tr>
+                    <input type="number"
+                        class="form-control"
+                        name="stok">
+                </div>
 
-        <tr>
-            <td>Stok</td>
-            <td>
-                <input type="number"
-                       name="stok">
-            </td>
-        </tr>
-
-        <tr>
-
-            <td></td>
-
-            <td>
-
-                <button type="submit">
-
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
                     Simpan
-
                 </button>
 
-                <a href="{{ route('buku.index') }}">
+                <a href="{{ route('buku.index') }}"
+                    class="btn btn-secondary">
 
+                    <i class="fas fa-arrow-left"></i>
                     Kembali
 
                 </a>
 
-            </td>
+            </form>
 
-        </tr>
+        </div>
 
-    </table>
+    </div>
 
-</form>
+</div>
 
 @endsection
