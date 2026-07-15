@@ -2,55 +2,64 @@
 
 @section('content')
 
-<h2>Edit Kategori</h2>
+<div class="container-fluid">
 
-<form action="{{ route('kategori.update',$kategori->id) }}"
-      method="POST">
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-edit"></i>
+            Edit Kategori
+        </h2>
+    </div>
 
-    @csrf
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    @method('PUT')
+    <div class="card shadow-sm">
 
-    <table>
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">Form Edit Kategori</h5>
+        </div>
 
-        <tr>
+        <div class="card-body">
 
-            <td>Nama Kategori</td>
+            <form action="{{ route('kategori.update', $kategori->id) }}" method="POST">
 
-            <td>
+                @csrf
+                @method('PUT')
 
-                <input type="text"
-                       name="nama_kategori"
-                       value="{{ $kategori->nama_kategori }}">
+                <div class="mb-3">
+                    <label class="form-label">Nama Kategori</label>
 
-            </td>
+                    <input
+                        type="text"
+                        name="nama_kategori"
+                        class="form-control"
+                        value="{{ $kategori->nama_kategori }}">
+                </div>
 
-        </tr>
-
-        <tr>
-
-            <td></td>
-
-            <td>
-
-                <button type="submit">
-
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-save"></i>
                     Update
-
                 </button>
 
-                <a href="{{ route('kategori.index') }}">
-
+                <a href="{{ route('kategori.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
                     Kembali
-
                 </a>
 
-            </td>
+            </form>
 
-        </tr>
+        </div>
 
-    </table>
+    </div>
 
-</form>
+</div>
 
 @endsection

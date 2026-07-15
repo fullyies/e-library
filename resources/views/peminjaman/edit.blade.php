@@ -2,75 +2,137 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
 
-<h3>Edit Peminjaman</h3>
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-edit"></i>
+            Edit Peminjaman
+        </h2>
+    </div>
 
-<form action="{{ route('peminjaman.update',$peminjaman->id) }}"
-method="POST">
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-@csrf
+    <div class="card shadow-sm">
 
-@method('PUT')
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">Form Edit Peminjaman</h5>
+        </div>
 
-<div class="mb-3">
+        <div class="card-body">
 
-<label>Status</label>
+            <form action="{{ route('peminjaman.update', $peminjaman->id) }}" method="POST">
 
-<select name="status" class="form-control">
+                @csrf
+                @method('PUT')
 
-<option value="Dipinjam"
-{{ $peminjaman->status=='Dipinjam'?'selected':'' }}>
-Dipinjam
-</option>
+                <div class="mb-3">
+                    <label class="form-label">Nama Peminjam</label>
+                    <input
+                        type="text"
+                        name="nama_peminjam"
+                        class="form-control"
+                        value="{{ $peminjaman->nama_peminjam }}">
+                </div>
 
-<option value="Dikembalikan"
-{{ $peminjaman->status=='Dikembalikan'?'selected':'' }}>
-Dikembalikan
-</option>
+                <div class="mb-3">
+                    <label class="form-label">Buku</label>
 
-<option value="Terlambat"
-{{ $peminjaman->status=='Terlambat'?'selected':'' }}>
-Terlambat
-</option>
+                    <select name="buku_id" class="form-select">
 
-</select>
+                        @foreach($bukus as $buku)
+                            <option
+                                value="{{ $buku->id }}"
+                                {{ $buku->id == $peminjaman->buku_id ? 'selected' : '' }}>
+                                {{ $buku->judul }}
+                            </option>
+                        @endforeach
 
-</div>
+                    </select>
+                </div>
 
-<button class="btn btn-primary">
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Pinjam</label>
+                    <input
+                        type="date"
+                        name="tanggal_pinjam"
+                        class="form-control"
+                        value="{{ $peminjaman->tanggal_pinjam }}">
+                </div>
 
-Update
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Kembali</label>
+                    <input
+                        type="date"
+                        name="tanggal_kembali"
+                        class="form-control"
+                        value="{{ $peminjaman->tanggal_kembali }}">
+                </div>
 
-</button>
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
 
-<a href="{{ route('peminjaman.index') }}"
-class="btn btn-secondary">
+                    <select name="status" class="form-select">
+                        <option value="Dipinjam"
+                            {{ $peminjaman->status == 'Dipinjam' ? 'selected' : '' }}>
+                            Dipinjam
+                        </option>
 
-Kembali
+                        <option value="Dikembalikan"
+                            {{ $peminjaman->status == 'Dikembalikan' ? 'selected' : '' }}>
+                            Dikembalikan
+                        </option>
 
-</a>
+                        <option value="Terlambat"
+                            {{ $peminjaman->status == 'Terlambat' ? 'selected' : '' }}>
+                            Terlambat
+                        </option>
+                    </select>
+                </div>
 
-</form>
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-save"></i>
+                    Update
+                </button>
 
-<hr>
+                <a href="{{ route('peminjaman.index') }}"
+                   class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali
+                </a>
 
-<form action="{{ route('peminjaman.destroy',$peminjaman->id) }}"
-method="POST">
+            </form>
 
-@csrf
+            <hr>
 
-@method('DELETE')
+            <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}"
+                  method="POST">
 
-<button
-class="btn btn-danger"
-onclick="return confirm('Yakin ingin menghapus data ini?')">
+                @csrf
+                @method('DELETE')
 
-Hapus
+                <button
+                    class="btn btn-danger"
+                    onclick="return confirm('Yakin ingin menghapus data ini?')">
 
-</button>
+                    <i class="fas fa-trash"></i>
+                    Hapus
 
-</form>
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
 
