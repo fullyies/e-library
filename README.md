@@ -9,11 +9,11 @@ Tugas Mata Kuliah **Pemrograman Web Lanjut**
 
 ## 👥 Anggota Kelompok
 
-| Peran | Nama | NPM |
+| Tugas | Nama | NPM |
 |---|---|---|
-| Frontend | Ahmad Rafi | |
-| Frontend | M. Fadhil Aufa Abdilah | |
-| Backend | Reihan Saputra | |
+| Frontend | Ahmad Rafi | 1062502 |
+| Frontend | Muhammad Fadhil Aufa Abdillah | 1062517 |
+| Backend | Reihan Saputra | 1062523 |
 | Fullstack | Nur Ihsan Habibi | 1062521 |
 
 ---
