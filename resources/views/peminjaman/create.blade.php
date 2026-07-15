@@ -1,141 +1,70 @@
-
 @extends('layout.app')
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
 
-<h3>Tambah Peminjaman</h3>
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-plus-circle"></i>
+            Tambah Peminjaman
+        </h2>
+    </div>
 
-<form action="{{ route('peminjaman.store') }}" method="POST">
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-@csrf
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Form Tambah Peminjaman</h5>
+        </div>
 
-<div class="mb-3">
+        <div class="card-body">
+            <form action="{{ route('peminjaman.store') }}" method="POST">
+                @csrf
 
-<label>Kode Pinjam</label>
+                <div class="mb-3">
+                    <label class="form-label">Kode Pinjam</label>
+                    <input type="text" name="kode_pinjam" class="form-control"
+                           value="{{ $kode_pinjam }}" readonly>
+                </div>
 
-<input type="text"
-name="kode_pinjam"
-class="form-control"
-value="{{ $kode_pinjam }}"
-readonly>
+                <div class="mb-3">
+                    <label class="form-label">Anggota</label>
+                    <select name="user_id" class="form-select">
+                        <option value="">-- Pilih Anggota --</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-</div>
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Pinjam</label>
+                    <input type="date" name="tanggal_pinjam" class="form-control">
+                </div>
 
-<div class="mb-3">
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Kembali</label>
+                    <input type="date" name="tanggal_kembali" class="form-control">
+                </div>
 
-<label>Anggota</label>
-
-<select name="user_id" class="form-control">
-
-<option value="">-- Pilih Anggota --</option>
-
-@foreach($users as $user)
-
-<option value="{{ $user->id }}">
-
-{{ $user->name }}
-
-</option>
-
-@endforeach
-
-</select>
-
-</div>
-
-<div class="mb-3">
-
-<label>Tanggal Pinjam</label>
-
-<input type="date"
-name="tanggal_pinjam"
-class="form-control">
-
-</div>
-
-<div class="mb-3">
-
-<label>Tanggal Kembali</label>
-
-<input type="date"
-name="tanggal_kembali"
-class="form-control">
-
-</div>
-
-<hr>
-
-<!--<h5>Daftar Buku</h5>
-
-<table class="table table-bordered">
-
-<thead>
-
-<tr>
-
-<th>Buku</th>
-
-<th>Jumlah</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td>
-
-<select name="buku_id[]" class="form-control">
-
-@foreach($bukus as $buku)
-
-<option value="{{ $buku->id }}">
-
-{{ $buku->judul }}
-
-</option>
-
-@endforeach
-
-</select>
-
-</td>
-
-<td>
-
-<input type="number"
-name="jumlah[]"
-class="form-control"
-value="1"
-min="1">
-
-</td>
-
-</tr>
-
-</tbody> -->
-
-</table>
-
-<button class="btn btn-success">
-
-Simpan
-
-</button>
-
-<a href="{{ route('peminjaman.index') }}"
-class="btn btn-secondary">
-
-Kembali
-
-</a>
-
-</form>
-
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Simpan
+                </button>
+                <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </a>
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection

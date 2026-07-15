@@ -15,15 +15,21 @@ class DashboardController extends Controller
 
         $totalKategori = Kategori::count();
 
-        $totalAnggota = User::where('role','anggota')->count();
+        $totalAnggota = User::where('role', 'anggota')->count();
 
         $totalPeminjaman = Peminjaman::count();
 
-        return view('dashboard.index', compact(
+        $bukuTerbaru = Buku::with('kategori')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact(
             'totalBuku',
             'totalKategori',
             'totalAnggota',
-            'totalPeminjaman'
+            'totalPeminjaman',
+            'bukuTerbaru'
         ));
     }
 }

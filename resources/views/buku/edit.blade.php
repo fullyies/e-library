@@ -2,131 +2,127 @@
 
 @section('content')
 
-<h2>Edit Buku</h2>
-@if($errors->any())
+<div class="container-fluid">
 
-    <ul style="color:red">
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-edit"></i>
+            Edit Data Buku
+        </h2>
+    </div>
 
-        @foreach($errors->all() as $error)
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-            <li>{{ $error }}</li>
+    <div class="card shadow-sm">
 
-        @endforeach
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">Form Edit Buku</h5>
+        </div>
 
-    </ul>
+        <div class="card-body">
 
-@endif
-<form action="{{ route('buku.update',$buku->id) }}" method="POST">
+            <form action="{{ route('buku.update', $buku->id) }}" method="POST">
 
-    @csrf
-    @method('PUT')
+                @csrf
+                @method('PUT')
 
-    <table>
+                <div class="mb-3">
+                    <label class="form-label">Kode Buku</label>
+                    <input type="text"
+                           class="form-control"
+                           name="kode_buku"
+                           value="{{ $buku->kode_buku }}"
+                           readonly>
+                </div>
 
-        <tr>
-            <td>Kode Buku</td>
-            <td>
-                <input type="text"
-                       name="kode_buku"
-                       value="{{ $buku->kode_buku }}"
-                       readonly>
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Judul Buku</label>
+                    <input type="text"
+                           class="form-control"
+                           name="judul"
+                           value="{{ $buku->judul }}">
+                </div>
 
-        <tr>
-            <td>Judul Buku</td>
-            <td>
-                <input type="text"
-                       name="judul"
-                       value="{{ $buku->judul }}">
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Kategori</label>
 
-        <tr>
+                    <select name="kategori_id" class="form-select">
 
-            <td>Kategori</td>
+                        @foreach($kategoris as $kategori)
 
-            <td>
+                        <option value="{{ $kategori->id }}"
+                            {{ $kategori->id == $buku->kategori_id ? 'selected' : '' }}>
 
-                <select name="kategori_id">
+                            {{ $kategori->nama_kategori }}
 
-                    @foreach($kategoris as $kategori)
+                        </option>
 
-                    <option value="{{ $kategori->id }}"
-                        {{ $kategori->id == $buku->kategori_id ? 'selected' : '' }}>
+                        @endforeach
 
-                        {{ $kategori->nama_kategori }}
+                    </select>
 
-                    </option>
+                </div>
 
-                    @endforeach
+                <div class="mb-3">
+                    <label class="form-label">Penulis</label>
 
-                </select>
+                    <input type="text"
+                           class="form-control"
+                           name="penulis"
+                           value="{{ $buku->penulis }}">
+                </div>
 
-            </td>
+                <div class="mb-3">
+                    <label class="form-label">Penerbit</label>
 
-        </tr>
+                    <input type="text"
+                           class="form-control"
+                           name="penerbit"
+                           value="{{ $buku->penerbit }}">
+                </div>
 
-        <tr>
-            <td>Penulis</td>
-            <td>
-                <input type="text"
-                       name="penulis"
-                       value="{{ $buku->penulis }}">
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Tahun Terbit</label>
 
-        <tr>
-            <td>Penerbit</td>
-            <td>
-                <input type="text"
-                       name="penerbit"
-                       value="{{ $buku->penerbit }}">
-            </td>
-        </tr>
+                    <input type="number"
+                           class="form-control"
+                           name="tahun_terbit"
+                           value="{{ $buku->tahun_terbit }}">
+                </div>
 
-        <tr>
-            <td>Tahun Terbit</td>
-            <td>
-                <input type="number"
-                       name="tahun_terbit"
-                       value="{{ $buku->tahun_terbit }}">
-            </td>
-        </tr>
+                <div class="mb-3">
+                    <label class="form-label">Stok</label>
 
-        <tr>
-            <td>Stok</td>
-            <td>
-                <input type="number"
-                       name="stok"
-                       value="{{ $buku->stok }}">
-            </td>
-        </tr>
+                    <input type="number"
+                           class="form-control"
+                           name="stok"
+                           value="{{ $buku->stok }}">
+                </div>
 
-        <tr>
-
-            <td></td>
-
-            <td>
-
-                <button type="submit">
-
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-save"></i>
                     Update
-
                 </button>
 
-                <a href="{{ route('buku.index') }}">
-
+                <a href="{{ route('buku.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
                     Kembali
-
                 </a>
 
-            </td>
+            </form>
 
-        </tr>
+        </div>
 
-    </table>
+    </div>
 
-</form>
+</div>
 
 @endsection

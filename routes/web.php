@@ -47,8 +47,6 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::resource('kategori', KategoriController::class);
 
     // Admin bisa CRUD buku (selain index & show)
-    // Didaftarkan LEBIH DULU supaya /buku/create tidak "kesedot"
-    // ke route show ({buku} = "create") milik group di bawah
     Route::resource('buku', BukuController::class)->except(['index','show']);
 
     // CRUD peminjaman
@@ -65,8 +63,6 @@ Route::middleware(['auth','admin'])->group(function () {
 /*
 |--------------------------------------------------------------------------
 | Route buku yang boleh diakses semua user login (anggota & admin)
-| Didaftarkan belakangan + constraint angka biar tidak konflik
-| dengan route admin di atas (create, edit, dll)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
