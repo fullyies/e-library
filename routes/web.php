@@ -2,38 +2,72 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BukuController;
-// use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\DetailPeminjamanController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return redirect('/login');
-});
+/*
+|--------------------------------------------------------------------------
+| Redirect Awal
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn() => redirect('/login'));
 
-// Login
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route setelah login
+/*
+|--------------------------------------------------------------------------
+| Route untuk semua user login (anggota & admin)
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
-
-    Route::post('/logout', [AuthController::class, 'logout'])
-        ->name('logout');
-
+    // Riwayat peminjaman anggota
+    Route::get('/riwayat', [PeminjamanController::class, 'riwayat'])->name('riwayat');
 });
 
-// Route Admin
+/*
+|--------------------------------------------------------------------------
+| Route khusus Admin
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'admin'])->group(function () {
 
+    Route::resource('user', UserController::class);
     Route::resource('kategori', KategoriController::class);
 
-    Route::resource('buku', BukuController::class);
+    // Admin bisa CRUD buku selain index & show
+    Route::resource('buku', BukuController::class)->except(['index', 'show']);
 
-    // Aktifkan jika controller sudah ada
-    // Route::resource('peminjaman', PeminjamanController::class);
+    // CRUD peminjaman
+    Route::resource('peminjaman', PeminjamanController::class);
 
+    // Detail peminjaman
+    Route::post('/detail-peminjaman', [DetailPeminjamanController::class, 'store'])->name('detail.store');
+    Route::delete('/detail-peminjaman/{id}', [DetailPeminjamanController::class, 'destroy'])->name('detail.destroy');
+
+    // Pengembalian buku
+    Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Buku yang boleh diakses semua user login
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::resource('buku', BukuController::class)
+        ->only(['index', 'show'])
+        ->where(['buku' => '[0-9]+']);
 });

@@ -1,9 +1,3 @@
-@if(session('success'))
-    <p style="color: green;">
-        {{ session('success') }}
-    </p>
-@endif
-
 @extends('layout.app')
 
 @section('content')
@@ -22,10 +16,12 @@
             Data Buku
         </h2>
 
-        <a href="{{ route('buku.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i>
-            Tambah Buku
-        </a>
+        @if(Auth::user()->role == 'admin')
+            <a href="{{ route('buku.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Tambah Buku
+            </a>
+        @endif
     </div>
 
     <div class="card shadow-sm">
@@ -41,7 +37,6 @@
                 <table class="table table-bordered table-hover align-middle">
 
                     <thead class="table-light">
-
                         <tr>
                             <th>No</th>
                             <th>Kode</th>
@@ -51,9 +46,11 @@
                             <th>Penerbit</th>
                             <th>Tahun</th>
                             <th>Stok</th>
-                            <th width="180">Aksi</th>
-                        </tr>
 
+                            @if(Auth::user()->role == 'admin')
+                                <th width="180">Aksi</th>
+                            @endif
+                        </tr>
                     </thead>
 
                     <tbody>
@@ -63,17 +60,11 @@
                         <tr>
 
                             <td>{{ $loop->iteration }}</td>
-
                             <td>{{ $item->kode_buku }}</td>
-
                             <td>{{ $item->judul }}</td>
-
                             <td>{{ $item->kategori->nama_kategori }}</td>
-
                             <td>{{ $item->penulis }}</td>
-
                             <td>{{ $item->penerbit }}</td>
-
                             <td>{{ $item->tahun_terbit }}</td>
 
                             <td>
@@ -82,15 +73,13 @@
                                 </span>
                             </td>
 
+                            @if(Auth::user()->role == 'admin')
                             <td>
 
                                 <a href="{{ route('buku.edit',$item->id) }}"
                                     class="btn btn-warning btn-sm">
-
                                     <i class="fas fa-edit"></i>
-
                                     Edit
-
                                 </a>
 
                                 <form action="{{ route('buku.destroy',$item->id) }}"
@@ -105,7 +94,6 @@
                                         class="btn btn-danger btn-sm">
 
                                         <i class="fas fa-trash"></i>
-
                                         Hapus
 
                                     </button>
@@ -113,6 +101,7 @@
                                 </form>
 
                             </td>
+                            @endif
 
                         </tr>
 
@@ -127,6 +116,10 @@
         </div>
 
     </div>
+
+    <a href="{{ route('dashboard') }}" class="btn btn-secondary mt-3">
+        Kembali
+    </a>
 
 </div>
 

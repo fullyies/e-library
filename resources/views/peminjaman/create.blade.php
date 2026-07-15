@@ -34,39 +34,43 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label class="form-label">Nama Peminjam</label>
-                    <input type="text"
-                           name="nama_peminjam"
-                           class="form-control">
+                    <label class="form-label">Kode Pinjam</label>
+                    <input
+                        type="text"
+                        name="kode_pinjam"
+                        class="form-control"
+                        value="{{ $kode_pinjam }}"
+                        readonly>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Buku</label>
+                    <label class="form-label">Anggota</label>
+                    <select name="user_id" class="form-select">
+                        <option value="">-- Pilih Anggota --</option>
 
-                    <select name="buku_id" class="form-select">
-
-                        @foreach($bukus as $buku)
-                            <option value="{{ $buku->id }}">
-                                {{ $buku->judul }}
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">
+                                {{ $user->name }}
                             </option>
                         @endforeach
 
                     </select>
-
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Tanggal Pinjam</label>
-                    <input type="date"
-                           name="tanggal_pinjam"
-                           class="form-control">
+                    <input
+                        type="date"
+                        name="tanggal_pinjam"
+                        class="form-control">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Tanggal Kembali</label>
-                    <input type="date"
-                           name="tanggal_kembali"
-                           class="form-control">
+                    <input
+                        type="date"
+                        name="tanggal_kembali"
+                        class="form-control">
                 </div>
 
                 <button type="submit" class="btn btn-primary">

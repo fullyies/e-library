@@ -36,11 +36,11 @@
 
                 <div class="mb-3">
                     <label class="form-label">Nama Peminjam</label>
-
-                    <input type="text"
-                           name="nama_peminjam"
-                           class="form-control"
-                           value="{{ $peminjaman->nama_peminjam }}">
+                    <input
+                        type="text"
+                        name="nama_peminjam"
+                        class="form-control"
+                        value="{{ $peminjaman->nama_peminjam }}">
                 </div>
 
                 <div class="mb-3">
@@ -49,36 +49,53 @@
                     <select name="buku_id" class="form-select">
 
                         @foreach($bukus as $buku)
-
-                            <option value="{{ $buku->id }}"
+                            <option
+                                value="{{ $buku->id }}"
                                 {{ $buku->id == $peminjaman->buku_id ? 'selected' : '' }}>
-
                                 {{ $buku->judul }}
-
                             </option>
-
                         @endforeach
 
                     </select>
-
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Tanggal Pinjam</label>
-
-                    <input type="date"
-                           name="tanggal_pinjam"
-                           class="form-control"
-                           value="{{ $peminjaman->tanggal_pinjam }}">
+                    <input
+                        type="date"
+                        name="tanggal_pinjam"
+                        class="form-control"
+                        value="{{ $peminjaman->tanggal_pinjam }}">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Tanggal Kembali</label>
+                    <input
+                        type="date"
+                        name="tanggal_kembali"
+                        class="form-control"
+                        value="{{ $peminjaman->tanggal_kembali }}">
+                </div>
 
-                    <input type="date"
-                           name="tanggal_kembali"
-                           class="form-control"
-                           value="{{ $peminjaman->tanggal_kembali }}">
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+
+                    <select name="status" class="form-select">
+                        <option value="Dipinjam"
+                            {{ $peminjaman->status == 'Dipinjam' ? 'selected' : '' }}>
+                            Dipinjam
+                        </option>
+
+                        <option value="Dikembalikan"
+                            {{ $peminjaman->status == 'Dikembalikan' ? 'selected' : '' }}>
+                            Dikembalikan
+                        </option>
+
+                        <option value="Terlambat"
+                            {{ $peminjaman->status == 'Terlambat' ? 'selected' : '' }}>
+                            Terlambat
+                        </option>
+                    </select>
                 </div>
 
                 <button type="submit" class="btn btn-warning">
@@ -91,6 +108,25 @@
                     <i class="fas fa-arrow-left"></i>
                     Kembali
                 </a>
+
+            </form>
+
+            <hr>
+
+            <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}"
+                  method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button
+                    class="btn btn-danger"
+                    onclick="return confirm('Yakin ingin menghapus data ini?')">
+
+                    <i class="fas fa-trash"></i>
+                    Hapus
+
+                </button>
 
             </form>
 

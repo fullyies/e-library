@@ -16,7 +16,9 @@ class AdminMiddleware
         }
 
         if (Auth::user()->role != 'admin') {
-            abort(403, 'Akses Ditolak');
+    return redirect()
+        ->route('dashboard')
+        ->with('error', 'Anda tidak memiliki hak akses ke halaman tersebut.');
         }
 
         return $next($request);
