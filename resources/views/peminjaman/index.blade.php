@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.app')
 
 @section('content')
 
@@ -69,6 +69,9 @@
         @endforelse
         </tbody>
     </table>
+    <a href="{{ route('dashboard') }}" class="btn btn-secondary">
+    Kembali
+</a>
 </div>
 
 @endsection

@@ -4,6 +4,10 @@
 
 <h2>Riwayat Peminjaman</h2>
 
+<a href="{{ route('dashboard') }}" class="btn btn-secondary">
+    Kembali
+</a>
+
 <hr>
 
 @if($peminjaman->isEmpty())

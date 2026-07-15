@@ -1,5 +1,5 @@
 
-@extends('layout.main')
+@extends('layout.app')
 
 @section('content')
 
@@ -67,7 +67,7 @@ class="form-control">
 
 <hr>
 
-<h5>Daftar Buku</h5>
+<!--<h5>Daftar Buku</h5>
 
 <table class="table table-bordered">
 
@@ -117,7 +117,7 @@ min="1">
 
 </tr>
 
-</tbody>
+</tbody> -->
 
 </table>
 

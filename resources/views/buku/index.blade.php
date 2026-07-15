@@ -1,13 +1,13 @@
+
+
+@extends('layout.app')
+
+@section('content')
 @if(session('success'))
     <p style="color: green;">
         {{ session('success') }}
     </p>
 @endif
-
-@extends('layout.app')
-
-@section('content')
-
 <h2>Data Buku</h2>
 
 @if(Auth::user()->role == 'admin')
@@ -15,9 +15,6 @@
         Tambah Buku
     </a>
 @endif
-<a href="{{ route('dashboard') }}" class="btn btn-secondary">
-    Kembali
-</a>
 
 <table border="1" cellpadding="10">
 
@@ -80,5 +77,7 @@
     @endforeach
 
 </table>
-
+<a href="{{ route('dashboard') }}" class="btn btn-secondary">
+    Kembali
+</a>
 @endsection

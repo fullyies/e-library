@@ -62,69 +62,33 @@
 
 @endif
 
-<h3>Tambah Buku</h3>
-
-<form action="{{ route('detail.store') }}" method="POST">
-
-    @csrf
-
-    <input type="hidden"
-        name="peminjaman_id"
-        value="{{ $peminjaman->id }}">
-
-    <table>
-
-        <tr>
-
-            <td>Buku</td>
-
-            <td>
-
-                <select name="buku_id">
-
-                    @foreach($buku as $item)
-
-                    <option value="{{ $item->id }}">
-
-                        {{ $item->judul }}
-
-                        (Stok : {{ $item->stok }})
-
-                    </option>
-
-                    @endforeach
-
-                </select>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Jumlah</td>
-
-            <td>
-
-                <input type="number"
-                    name="jumlah"
-                    min="1">
-
-            </td>
-
-        </tr>
-
-    </table>
-
-    <br>
-
-    <button>
-
-        Tambah Buku
-
-    </button>
-
-</form>
+@if($peminjaman->status == 'Dipinjam')
+    <h3>Tambah Buku</h3>
+    <form action="{{ route('detail.store') }}" method="POST">
+        @csrf
+        <input type="hidden" name="peminjaman_id" value="{{ $peminjaman->id }}">
+        <table>
+            <tr>
+                <td>Buku</td>
+                <td>
+                    <select name="buku_id">
+                        @foreach($buku as $item)
+                            <option value="{{ $item->id }}">
+                                {{ $item->judul }} (Stok : {{ $item->stok }})
+                            </option>
+                        @endforeach
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Jumlah</td>
+                <td><input type="number" name="jumlah" min="1"></td>
+            </tr>
+        </table>
+        <br>
+        <button>Tambah Buku</button>
+    </form>
+@endif
 
 <hr>
 
@@ -175,5 +139,7 @@
     @endforeach
 
 </table>
-
+<a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">
+    Kembali
+</a>
 @endsection

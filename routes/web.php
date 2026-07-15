@@ -14,45 +14,27 @@ use App\Http\Controllers\DashboardController;
 | Redirect Awal
 |--------------------------------------------------------------------------
 */
-
-Route::get('/', function () {
-    return redirect('/login');
-});
+Route::get('/', fn() => redirect('/login'));
 
 /*
 |--------------------------------------------------------------------------
 | Authentication
 |--------------------------------------------------------------------------
 */
-
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| Route untuk semua user yang sudah login
+| Route untuk semua user login (anggota & admin)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
-
-    Route::post('/logout', [AuthController::class, 'logout'])
-        ->name('logout');
-
-    // Anggota & Admin boleh melihat daftar buku
-    Route::get('/buku', [BukuController::class, 'index'])
-        ->name('buku.index');
-
-    //riwayat peminjaman
-    Route::get('/buku/{buku}', [BukuController::class, 'show'])
-        ->name('buku.show');
-    Route::get('/riwayat',
-    [PeminjamanController::class,'riwayat'])
-    ->name('riwayat');
-
+    // Riwayat peminjaman anggota
+    Route::get('/riwayat', [PeminjamanController::class,'riwayat'])->name('riwayat');
 });
 
 /*
@@ -60,41 +42,35 @@ Route::middleware('auth')->group(function () {
 | Route khusus Admin
 |--------------------------------------------------------------------------
 */
-
-Route::middleware(['auth', 'admin'])->group(function () {
-
+Route::middleware(['auth','admin'])->group(function () {
     Route::resource('user', UserController::class);
-
     Route::resource('kategori', KategoriController::class);
 
-    // CRUD Buku (selain index & show)
-    Route::get('/buku/create', [BukuController::class, 'create'])
-        ->name('buku.create');
+    // Admin bisa CRUD buku (selain index & show)
+    // Didaftarkan LEBIH DULU supaya /buku/create tidak "kesedot"
+    // ke route show ({buku} = "create") milik group di bawah
+    Route::resource('buku', BukuController::class)->except(['index','show']);
 
-    Route::post('/buku', [BukuController::class, 'store'])
-        ->name('buku.store');
-
-    Route::get('/buku/{buku}/edit', [BukuController::class, 'edit'])
-        ->name('buku.edit');
-
-    Route::put('/buku/{buku}', [BukuController::class, 'update'])
-        ->name('buku.update');
-
-    Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
-        ->name('buku.destroy');
-
+    // CRUD peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
 
-    Route::post('/detail-peminjaman',
-        [DetailPeminjamanController::class, 'store'])
-        ->name('detail.store');
+    // Detail peminjaman (tambah/hapus buku)
+    Route::post('/detail-peminjaman', [DetailPeminjamanController::class, 'store'])->name('detail.store');
+    Route::delete('/detail-peminjaman/{id}', [DetailPeminjamanController::class, 'destroy'])->name('detail.destroy');
 
-    Route::delete('/detail-peminjaman/{id}',
-        [DetailPeminjamanController::class, 'destroy'])
-        ->name('detail.destroy');
+    // Aksi pengembalian
+    Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
+});
 
-    Route::post('/peminjaman/{id}/kembali',
-        [PeminjamanController::class, 'kembali'])
-        ->name('peminjaman.kembali');
-
+/*
+|--------------------------------------------------------------------------
+| Route buku yang boleh diakses semua user login (anggota & admin)
+| Didaftarkan belakangan + constraint angka biar tidak konflik
+| dengan route admin di atas (create, edit, dll)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::resource('buku', BukuController::class)
+        ->only(['index','show'])
+        ->where(['buku' => '[0-9]+']);
 });

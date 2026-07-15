@@ -67,5 +67,7 @@
     @endforeach
 
 </table>
-
+<a href="{{ route('dashboard') }}" class="btn btn-secondary">
+    Kembali
+</a>
 @endsection
