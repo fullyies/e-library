@@ -1,58 +1,205 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📚 E-Library — Sistem Informasi Perpustakaan Digital
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen perpustakaan berbasis web untuk mengelola data buku, kategori, anggota, serta transaksi peminjaman dan pengembalian buku secara digital.
 
-## About Laravel
+Tugas Mata Kuliah **Pemrograman Web Lanjut**
+**Kelompok 6**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 👥 Anggota Kelompok
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Peran | Nama | NPM |
+|---|---|---|
+| Frontend | Ahmad Rafi | |
+| Frontend | M. Fadhil Aufa Abdilah | |
+| Backend | Reihan Saputra | |
+| Fullstack | Nur Ihsan Habibi | 1062521 |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Teknologi yang Digunakan
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Kategori | Teknologi |
+|---|---|
+| Bahasa Pemrograman | PHP 8.3 |
+| Framework Backend | Laravel 13 |
+| Templating | Blade |
+| Styling | Bootstrap 5, Font Awesome |
+| Build Tool Frontend | Vite, Tailwind CSS |
+| Database | SQLite (default) — bisa diganti MySQL |
+| Autentikasi | Laravel Auth (session-based, login dengan username) |
+| Package Manager | Composer (PHP), NPM (JS/CSS) |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## ✨ Fitur Utama
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+**Untuk Admin:**
+- Login khusus admin
+- Kelola data buku (tambah, edit, hapus, lihat) — kode buku otomatis
+- Kelola kategori buku
+- Kelola data anggota (user)
+- Kelola transaksi peminjaman (buat peminjaman baru, tambah/hapus buku dalam peminjaman, proses pengembalian)
+- Melihat seluruh riwayat peminjaman semua anggota
 
-```bash
-composer require laravel/boost --dev
+**Untuk Anggota (User):**
+- Login sebagai anggota
+- Melihat daftar buku yang tersedia
+- Melihat riwayat peminjaman miliknya sendiri
 
-php artisan boost:install
+**Hak akses** diatur menggunakan Middleware (`AdminMiddleware` & `AnggotaMiddleware`), sehingga anggota tidak bisa mengakses halaman khusus admin (kategori, kelola buku, kelola peminjaman, kelola user), dan sebaliknya.
+
+---
+
+## 📂 Struktur Modul
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── AuthController.php          # Login & logout
+│   │   ├── DashboardController.php     # Dashboard (statistik & buku terbaru)
+│   │   ├── BukuController.php          # CRUD data buku
+│   │   ├── KategoriController.php      # CRUD kategori
+│   │   ├── UserController.php          # CRUD anggota (admin)
+│   │   ├── PeminjamanController.php    # Transaksi peminjaman & pengembalian
+│   │   └── DetailPeminjamanController.php # Detail buku dalam 1 peminjaman
+│   └── Middleware/
+│       ├── AdminMiddleware.php
+│       └── AnggotaMiddleware.php
+├── Models/
+│   ├── User.php
+│   ├── Buku.php
+│   ├── Kategori.php
+│   ├── Peminjaman.php
+│   └── DetailPeminjaman.php
+resources/views/                        # Blade templates (buku, kategori, peminjaman, user, dashboard, auth, layout)
+database/
+├── migrations/                         # Struktur tabel: users, kategori, buku, peminjaman, detail_peminjaman
+└── seeders/                            # Data awal (kategori, buku, & akun demo)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 🚀 Cara Menjalankan Project
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Persyaratan (Requirements)
 
-## Code of Conduct
+Pastikan sudah terinstall di komputer:
+- **PHP** ≥ 8.3
+- **Composer**
+- **Node.js** & **NPM**
+- Git (opsional, untuk clone repository)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. Clone / Extract Project
 
-## Security Vulnerabilities
+```bash
+git clone <url-repository-ini>
+cd e-library
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Install Dependency PHP
 
-## License
+```bash
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Install Dependency JavaScript
+
+```bash
+npm install
+```
+
+### 5. Konfigurasi Environment
+
+Salin file `.env.example` menjadi `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Lalu generate application key:
+
+```bash
+php artisan key:generate
+```
+
+> Secara default, project ini menggunakan **SQLite** (`DB_CONNECTION=sqlite`) supaya tidak perlu setup database server tambahan. Jika ingin memakai MySQL, ubah bagian `DB_*` di file `.env` sesuai konfigurasi database masing-masing, lalu sesuaikan juga `config/database.php` bila perlu.
+
+Jika memakai SQLite, buat dulu file databasenya (jika belum ada):
+
+```bash
+touch database/database.sqlite
+```
+
+### 6. Migrasi & Isi Data Awal (Seeder)
+
+```bash
+php artisan migrate --seed
+```
+
+Perintah ini akan membuat seluruh tabel (`users`, `kategori`, `buku`, `peminjaman`, `detail_peminjaman`) sekaligus mengisi data awal:
+- Data kategori & buku contoh
+- Akun login demo (lihat tabel di bawah)
+
+### 7. Build Asset Frontend
+
+Untuk mode pengembangan (development):
+
+```bash
+npm run dev
+```
+
+Untuk build production:
+
+```bash
+npm run build
+```
+
+### 8. Jalankan Server Laravel
+
+```bash
+php artisan serve
+```
+
+Buka browser dan akses:
+
+```
+http://127.0.0.1:8000
+```
+
+> 💡 Tips: Jalankan `php artisan serve` dan `npm run dev` di dua terminal terpisah secara bersamaan saat development, agar perubahan CSS/JS langsung ter-reload.
+
+---
+
+## 🔑 Akun Login Demo (Hasil Seeder)
+
+Login menggunakan **username**, bukan email.
+
+| Role | Username | Password |
+|---|---|---|
+| Admin | `admin` | `admin123` |
+| Anggota | `farhan` | `farhan123` |
+| Anggota | `budi` | `budi123` |
+
+---
+
+## 🗃️ Struktur Database (Ringkas)
+
+- **users** — data akun (admin/anggota), dengan kolom `username` dan `role`
+- **kategori** — kategori/genre buku
+- **buku** — data buku (kode, judul, penulis, penerbit, tahun terbit, stok), relasi ke kategori
+- **peminjaman** — transaksi peminjaman (kode pinjam, anggota, tanggal pinjam/kembali, status)
+- **detail_peminjaman** — daftar buku beserta jumlah dalam satu transaksi peminjaman
+
+---
+
+## 📌 Catatan
+
+- Pastikan folder `storage` dan `bootstrap/cache` memiliki izin tulis (write permission) jika di-deploy ke server Linux.
+- Jika ada error terkait cache konfigurasi setelah mengubah `.env`, jalankan:
+  ```bash
+  php artisan config:clear
+  php artisan cache:clear
+  ```
