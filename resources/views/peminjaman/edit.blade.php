@@ -21,9 +21,14 @@
         </div>
     @endif
 
+<<<<<<< HEAD
     <div class="card shadow-sm">
+=======
+    <div class="card shadow-sm mb-4">
+
+>>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
         <div class="card-header bg-warning text-dark">
-            <h5 class="mb-0">Form Edit Peminjaman</h5>
+            <h5 class="mb-0">Ubah Status Peminjaman</h5>
         </div>
 
         <div class="card-body">
@@ -32,6 +37,7 @@
                 @method('PUT')
 
                 <div class="mb-3">
+<<<<<<< HEAD
                     <label class="form-label">Nama Peminjam</label>
                     <input type="text" name="nama_peminjam" class="form-control"
                            value="{{ $peminjaman->nama_peminjam }}">
@@ -72,6 +78,33 @@
 
                 <button type="submit" class="btn btn-warning">
                     <i class="fas fa-save"></i> Update
+=======
+                    <label class="form-label">Status</label>
+
+                    <select name="status" class="form-select">
+
+                        <option value="Dipinjam"
+                            {{ $peminjaman->status == 'Dipinjam' ? 'selected' : '' }}>
+                            Dipinjam
+                        </option>
+
+                        <option value="Dikembalikan"
+                            {{ $peminjaman->status == 'Dikembalikan' ? 'selected' : '' }}>
+                            Dikembalikan
+                        </option>
+
+                        <option value="Terlambat"
+                            {{ $peminjaman->status == 'Terlambat' ? 'selected' : '' }}>
+                            Terlambat
+                        </option>
+
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Update
+>>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                 </button>
                 <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Kembali
@@ -90,6 +123,43 @@
             </form>
         </div>
     </div>
+<<<<<<< HEAD
 </div>
 
 @endsection
+=======
+
+    <div class="card shadow-sm border-danger">
+
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Zona Berbahaya</h5>
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-muted mb-3">
+                Menghapus data peminjaman ini bersifat permanen dan tidak bisa dibatalkan.
+            </p>
+
+            <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}" method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                        class="btn btn-danger"
+                        onclick="return confirm('Yakin ingin menghapus data ini?')">
+                    <i class="fas fa-trash"></i>
+                    Hapus Peminjaman
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@endsection
+>>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
