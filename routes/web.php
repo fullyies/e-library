@@ -35,9 +35,6 @@ Route::middleware('auth')->group(function () {
 
     // Riwayat peminjaman anggota
     Route::get('/riwayat', [PeminjamanController::class,'riwayat'])->name('riwayat');
-
-    // Buku yang bisa dilihat semua user login
-    Route::resource('buku', BukuController::class)->only(['index','show']);
 });
 
 /*
@@ -50,6 +47,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('kategori', KategoriController::class);
 
     // Admin bisa CRUD buku (selain index & show)
+    // WAJIB didaftarkan SEBELUM route index/show milik group auth biasa,
+    // supaya /buku/create tidak "kesedot" ke route show ({buku} = "create")
     Route::resource('buku', BukuController::class)->except(['index','show']);
 
     // CRUD peminjaman
@@ -61,4 +60,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Pengembalian buku
     Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Buku yang bisa dilihat semua user login (anggota & admin)
+| Didaftarkan PALING BELAKANG + constraint angka biar aman dari konflik
+| dengan route admin (create, edit, dll) di atas
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::resource('buku', BukuController::class)
+        ->only(['index','show'])
+        ->where(['buku' => '[0-9]+']);
 });
