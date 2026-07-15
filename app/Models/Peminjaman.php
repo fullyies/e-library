@@ -11,27 +11,21 @@ class Peminjaman extends Model
 
     protected $table = 'peminjaman';
 
-    protected $fillable = [
-
-        'kode_pinjam',
-
-        'user_id',
-
-        'tanggal_pinjam',
-
-        'tanggal_kembali',
-
-        'status'
-
+   protected $fillable = [
+    'kode_pinjam',
+    'user_id',
+    'tanggal_pinjam',
+    'tanggal_kembali',
+    'status',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class); // Setiap peminjaman dimiliki oleh satu user (one to one relationship)
+        return $this->belongsTo(User::class);
     }
 
     public function detailPeminjaman()
-{
-    return $this->hasMany(DetailPeminjaman::class); // Setiap peminjaman dapat memiliki banyak detail peminjaman (one to many relationship)
-}
+    {
+        return $this->hasMany(DetailPeminjaman::class);
+    }
 }

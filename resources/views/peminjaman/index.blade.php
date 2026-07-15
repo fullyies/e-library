@@ -18,6 +18,18 @@
 
     </div>
 
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card shadow-sm">
 
         <div class="card-header bg-primary text-white">
@@ -34,27 +46,87 @@
 
                         <tr>
                             <th>No</th>
+                            <th>Kode Pinjam</th>
                             <th>Nama Peminjam</th>
                             <th>Buku</th>
                             <th>Tanggal Pinjam</th>
                             <th>Tanggal Kembali</th>
                             <th>Status</th>
-                            <th width="180">Aksi</th>
+                            <th width="200">Aksi</th>
                         </tr>
 
                     </thead>
 
                     <tbody>
 
+                        @forelse($peminjaman as $item)
+
                         <tr>
 
-                            <td colspan="7" class="text-center text-muted">
+                            <td>{{ $loop->iteration }}</td>
 
-                                Belum ada data peminjaman.
+                            <td>{{ $item->kode_pinjam }}</td>
+
+                            <td>{{ $item->user->name }}</td>
+
+                            <td>{{ $item->buku->judul ?? '-' }}</td>
+
+                            <td>{{ $item->tanggal_pinjam }}</td>
+
+                            <td>{{ $item->tanggal_kembali }}</td>
+
+                            <td>
+                                @if($item->status == 'Dipinjam')
+                                    <span class="badge bg-warning text-dark">{{ $item->status }}</span>
+                                @elseif($item->status == 'Dikembalikan')
+                                    <span class="badge bg-success">{{ $item->status }}</span>
+                                @else
+                                    <span class="badge bg-danger">{{ $item->status }}</span>
+                                @endif
+                            </td>
+
+                            <td>
+
+                                <a href="{{ route('peminjaman.show',$item->id) }}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                    Detail
+                                </a>
+
+                                <a href="{{ route('peminjaman.edit',$item->id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </a>
+
+                                @if($item->status == 'Dipinjam')
+                                    <form action="{{ route('peminjaman.kembali',$item->id) }}"
+                                        method="POST"
+                                        class="d-inline">
+
+                                        @csrf
+
+                                        <button type="submit"
+                                            class="btn btn-success btn-sm"
+                                            onclick="return confirm('Yakin buku dikembalikan?')">
+                                            <i class="fas fa-check"></i>
+                                            Kembalikan
+                                        </button>
+
+                                    </form>
+                                @endif
 
                             </td>
 
                         </tr>
+
+                        @empty
+
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-3">
+                                Belum ada data peminjaman.
+                            </td>
+                        </tr>
+
+                        @endforelse
 
                     </tbody>
 

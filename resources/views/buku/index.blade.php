@@ -1,9 +1,3 @@
-@if(session('success'))
-    <p style="color: green;">
-        {{ session('success') }}
-    </p>
-@endif
-
 @extends('layout.app')
 
 @section('content')
@@ -22,10 +16,12 @@
             Data Buku
         </h2>
 
-        <a href="{{ route('buku.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i>
-            Tambah Buku
-        </a>
+        @if(Auth::user()->role == 'admin')
+            <a href="{{ route('buku.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Tambah Buku
+            </a>
+        @endif
     </div>
 
     <div class="card shadow-sm">
@@ -51,7 +47,9 @@
                             <th>Penerbit</th>
                             <th>Tahun</th>
                             <th>Stok</th>
-                            <th width="180">Aksi</th>
+                            @if(Auth::user()->role == 'admin')
+                                <th width="180">Aksi</th>
+                            @endif
                         </tr>
 
                     </thead>
@@ -82,6 +80,7 @@
                                 </span>
                             </td>
 
+                            @if(Auth::user()->role == 'admin')
                             <td>
 
                                 <a href="{{ route('buku.edit',$item->id) }}"
@@ -113,6 +112,7 @@
                                 </form>
 
                             </td>
+                            @endif
 
                         </tr>
 
