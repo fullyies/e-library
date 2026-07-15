@@ -47,11 +47,8 @@ Route::middleware('auth')->group(function () {
         ->name('buku.index');
 
     //riwayat peminjaman
-    Route::get('/buku/{buku}', [BukuController::class, 'show'])
-        ->name('buku.show');
-    Route::get('/riwayat',
-    [PeminjamanController::class,'riwayat'])
-    ->name('riwayat');
+    Route::get('/riwayat', [PeminjamanController::class, 'riwayat'])
+        ->name('riwayat');
 
 });
 
@@ -96,5 +93,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/peminjaman/{id}/kembali',
         [PeminjamanController::class, 'kembali'])
         ->name('peminjaman.kembali');
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| Route detail buku (WAJIB PALING BAWAH)
+|--------------------------------------------------------------------------
+| Route wildcard {buku} ini sengaja ditaruh paling akhir supaya tidak
+| "menangkap" duluan request ke path spesifik seperti /buku/create
+| atau /buku/{buku}/edit. Laravel mencocokkan route dari atas ke bawah,
+| jadi semua route /buku/... yang spesifik harus didaftarkan lebih dulu.
+*/
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/buku/{buku}', [BukuController::class, 'show'])
+        ->name('buku.show');
 
 });
