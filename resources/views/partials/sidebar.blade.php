@@ -25,7 +25,8 @@
                 </a>
             </li>
 
-            <!-- Kategori -->
+            <!-- Kategori: hanya admin -->
+            @if(Auth::user()->role == 'admin')
             <li class="nav-item mb-2">
                 <a href="{{ route('kategori.index') }}"
                    class="nav-link {{ request()->is('kategori*') ? 'bg-primary rounded text-white' : 'text-white' }}">
@@ -33,8 +34,10 @@
                     Kategori
                 </a>
             </li>
+            @endif
 
-            <!-- Peminjaman -->
+            <!-- Peminjaman: admin lihat semua transaksi, user lihat riwayat sendiri -->
+            @if(Auth::user()->role == 'admin')
             <li class="nav-item mb-2">
                 <a href="{{ route('peminjaman.index') }}"
                    class="nav-link {{ request()->is('peminjaman*') ? 'bg-primary rounded text-white' : 'text-white' }}">
@@ -42,6 +45,15 @@
                     Peminjaman
                 </a>
             </li>
+            @else
+            <li class="nav-item mb-2">
+                <a href="{{ route('riwayat') }}"
+                   class="nav-link {{ request()->routeIs('riwayat') ? 'bg-primary rounded text-white' : 'text-white' }}">
+                    <i class="fas fa-clock-rotate-left me-2"></i>
+                    Riwayat Peminjaman
+                </a>
+            </li>
+            @endif
 
             <!-- Logout -->
             <li class="nav-item mt-3">

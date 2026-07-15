@@ -24,23 +24,21 @@ class PeminjamanController extends Controller
     /**
      * Form tambah peminjaman
      */
-    public function create()
-    {
-        $users = User::where('role', 'anggota')->get();
-        $bukus = Buku::all();
+   public function create()
+{
+    $users = User::where('role', 'anggota')->get();
 
-        // Generate kode peminjaman otomatis (ambil terakhir, lalu increment)
-        $last = Peminjaman::latest()->first();
-        $nomor = $last ? (int) substr($last->kode_pinjam, 3) + 1 : 1;
+    // Generate kode peminjaman otomatis (ambil terakhir, lalu increment)
+    $last = Peminjaman::latest()->first();
+    $nomor = $last ? (int) substr($last->kode_pinjam, 3) + 1 : 1;
 
-        $kode_pinjam = 'PJM' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
+    $kode_pinjam = 'PJM' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
 
-        return view('peminjaman.create', compact(
-            'users',
-            'bukus',
-            'kode_pinjam'
-        ));
-    }
+    return view('peminjaman.create', compact(
+        'users',
+        'kode_pinjam'
+    ));
+}
 
     /**
      * Simpan peminjaman

@@ -56,33 +56,6 @@
                     <input type="date" name="tanggal_kembali" class="form-control">
                 </div>
 
-                <hr>
-
-                <h5>Daftar Buku</h5>
-                <table class="table table-bordered">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Buku</th>
-                            <th width="150">Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <select name="buku_id[]" class="form-select">
-                                    @foreach($bukus as $buku)
-                                        <option value="{{ $buku->id }}">{{ $buku->judul }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" name="jumlah[]" class="form-control"
-                                       value="1" min="1">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save"></i> Simpan
                 </button>
