@@ -46,8 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/buku', [BukuController::class, 'index'])
         ->name('buku.index');
 
+    //riwayat peminjaman
     Route::get('/buku/{buku}', [BukuController::class, 'show'])
         ->name('buku.show');
+    Route::get('/riwayat',
+    [PeminjamanController::class,'riwayat'])
+    ->name('riwayat');
 
 });
 

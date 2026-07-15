@@ -6,6 +6,7 @@ use App\Models\Buku;
 use App\Models\Peminjaman;
 use App\Models\User;
 use App\Models\DetailPeminjaman;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; //db transaction
 
@@ -258,5 +259,19 @@ public function kembali($id)
             ->route('peminjaman.index')
             ->with('success', 'Data peminjaman berhasil dihapus');
 
+    }
+    public function riwayat()
+    {
+        $peminjaman = Peminjaman::with([
+            'detailPeminjaman.buku'
+        ])
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+    return view(
+        'peminjaman.riwayat',
+        compact('peminjaman')
+    );
     }
 }
