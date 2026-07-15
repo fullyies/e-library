@@ -26,17 +26,29 @@ class PeminjamanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-   public function create()
-{
-    $anggota = User::where('role','anggota')->get();
+    public function create()
+    {
+        $users = User::where('role', 'anggota')->get();
 
-    $buku = Buku::all();
+        $bukus = Buku::all();
 
-    return view('peminjaman.create', compact(
-        'anggota',
-        'buku'
-    ));
-}
+        // Generate preview kode peminjaman (sama seperti logic di store())
+        $last = Peminjaman::latest()->first();
+
+        if ($last) {
+            $nomor = (int) substr($last->kode_pinjam, 3) + 1;
+        } else {
+            $nomor = 1;
+        }
+
+        $kode_pinjam = 'PJM' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
+
+        return view('peminjaman.create', compact(
+            'users',
+            'bukus',
+            'kode_pinjam'
+        ));
+    }
 
     /**
      * Store a newly created resource in storage.
