@@ -9,27 +9,25 @@ use App\Models\User;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        $totalBuku = Buku::count();
+   public function index()
+{
+    $totalBuku = Buku::count();
+    $totalKategori = Kategori::count();
+    $totalAnggota = User::where('role', 'anggota')->count();
+    $totalPeminjaman = Peminjaman::count();
 
-        $totalKategori = Kategori::count();
+    $bukuTerbaru = Buku::with('kategori')
+        ->latest()
+        ->take(5)
+        ->get();
 
-        $totalAnggota = User::where('role', 'anggota')->count();
+    return view('dashboard', compact(
+        'totalBuku',
+        'totalKategori',
+        'totalAnggota',
+        'totalPeminjaman',
+        'bukuTerbaru'
+    ));
+}
 
-        $totalPeminjaman = Peminjaman::count();
-
-        $bukuTerbaru = Buku::with('kategori')
-            ->latest()
-            ->take(5)
-            ->get();
-
-        return view('dashboard', compact(
-            'totalBuku',
-            'totalKategori',
-            'totalAnggota',
-            'totalPeminjaman',
-            'bukuTerbaru'
-        ));
-    }
 }

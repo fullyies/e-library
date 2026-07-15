@@ -18,21 +18,12 @@
 
         @if(Auth::user()->role == 'admin')
             <a href="{{ route('buku.create') }}" class="btn btn-primary">
-<<<<<<< HEAD
                 <i class="fas fa-plus"></i> Tambah Buku
-=======
-                <i class="fas fa-plus"></i>
-                Tambah Buku
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
             </a>
         @endif
     </div>
 
     <div class="card shadow-sm">
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Daftar Buku</h5>
         </div>
@@ -40,10 +31,6 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
@@ -63,10 +50,6 @@
                         @foreach($bukus as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                             <td>{{ $item->kode_buku }}</td>
                             <td>{{ $item->judul }}</td>
                             <td>{{ $item->kategori->nama_kategori }}</td>
@@ -76,10 +59,6 @@
                             <td>
                                 <span class="badge bg-success">{{ $item->stok }}</span>
                             </td>
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                             @if(Auth::user()->role == 'admin')
                             <td>
                                 <a href="{{ route('buku.edit',$item->id) }}" class="btn btn-warning btn-sm">
@@ -94,10 +73,6 @@
                                 </form>
                             </td>
                             @endif
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                         </tr>
                         @endforeach
                     </tbody>
@@ -105,6 +80,10 @@
             </div>
         </div>
     </div>
+
+    <a href="{{ route('dashboard') }}" class="btn btn-secondary mt-3">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
 
 </div>
 

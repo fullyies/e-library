@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
 | Route khusus Admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth','admin'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('kategori', KategoriController::class);
 
@@ -55,10 +55,10 @@ Route::middleware(['auth','admin'])->group(function () {
     // CRUD peminjaman
     Route::resource('peminjaman', PeminjamanController::class);
 
-    // Detail peminjaman (tambah/hapus buku)
+    // Detail peminjaman
     Route::post('/detail-peminjaman', [DetailPeminjamanController::class, 'store'])->name('detail.store');
     Route::delete('/detail-peminjaman/{id}', [DetailPeminjamanController::class, 'destroy'])->name('detail.destroy');
 
-    // Aksi pengembalian
+    // Pengembalian buku
     Route::post('/peminjaman/{id}/kembali', [PeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
 });

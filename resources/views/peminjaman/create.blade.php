@@ -32,35 +32,16 @@
 
                 <div class="mb-3">
                     <label class="form-label">Kode Pinjam</label>
-<<<<<<< HEAD
                     <input type="text" name="kode_pinjam" class="form-control"
                            value="{{ $kode_pinjam }}" readonly>
-=======
-                    <input type="text"
-                           name="kode_pinjam"
-                           class="form-control"
-                           value="{{ $kode_pinjam }}"
-                           readonly>
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Anggota</label>
-<<<<<<< HEAD
                     <select name="user_id" class="form-select">
                         <option value="">-- Pilih Anggota --</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
-=======
-
-                    <select name="user_id" class="form-select">
-                        <option value="">-- Pilih Anggota --</option>
-
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}">
-                                {{ $user->name }}
-                            </option>
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
                         @endforeach
                     </select>
                 </div>
@@ -78,37 +59,28 @@
                 <hr>
 
                 <h5>Daftar Buku</h5>
-
                 <table class="table table-bordered">
-
                     <thead class="table-light">
                         <tr>
                             <th>Buku</th>
                             <th width="150">Jumlah</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <tr>
                             <td>
                                 <select name="buku_id[]" class="form-select">
                                     @foreach($bukus as $buku)
-                                        <option value="{{ $buku->id }}">
-                                            {{ $buku->judul }}
-                                        </option>
+                                        <option value="{{ $buku->id }}">{{ $buku->judul }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td>
-                                <input type="number"
-                                       name="jumlah[]"
-                                       class="form-control"
-                                       value="1"
-                                       min="1">
+                                <input type="number" name="jumlah[]" class="form-control"
+                                       value="1" min="1">
                             </td>
                         </tr>
                     </tbody>
-
                 </table>
 
                 <button type="submit" class="btn btn-primary">
@@ -120,13 +92,7 @@
             </form>
         </div>
     </div>
-<<<<<<< HEAD
-</div>
-
-@endsection
-=======
 
 </div>
 
 @endsection
->>>>>>> 6d08c318106ff09117e53b1f0b1a899eddcc146e
