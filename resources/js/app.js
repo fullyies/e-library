@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     });
 
-    // Aktifkan semua tooltip Bootstrap (kalau ada elemen data-bs-toggle="tooltip")
+    // Aktifkan tooltip Bootstrap 
     const tooltipEls = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     tooltipEls.forEach((el) => new bootstrap.Tooltip(el));
 
