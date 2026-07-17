@@ -30,5 +30,11 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Relasi: satu user (anggota) bisa memiliki banyak peminjaman.
+     */
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class); // Relasi one-to-many dengan model Peminjaman
+    }
 }
-

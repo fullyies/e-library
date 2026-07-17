@@ -23,11 +23,11 @@ class Buku extends Model
 
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class);
+        return $this->belongsTo(Kategori::class); // Relasi many-to-one dengan model Kategori
     }
 
     public function detailPeminjaman()
     {
-        return $this->hasMany(DetailPeminjaman::class);
+        return $this->hasMany(DetailPeminjaman::class); // Relasi one-to-many dengan model DetailPeminjaman
     }
 }

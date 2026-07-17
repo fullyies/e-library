@@ -21,11 +21,11 @@ class Peminjaman extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class); // Relasi many-to-one dengan model User
     }
 
     public function detailPeminjaman()
     {
-        return $this->hasMany(DetailPeminjaman::class);
+        return $this->hasMany(DetailPeminjaman::class);// Relasi one-to-many dengan model DetailPeminjaman
     }
 }

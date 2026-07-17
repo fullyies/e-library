@@ -124,11 +124,17 @@ class UserController extends Controller
      */
    public function destroy(string $id)
 {
-   if (session('id_user') == $id) {
-    return redirect()->back()
-        ->with('error', 'Anda tidak dapat menghapus akun yang sedang digunakan.');
-}
+    if (Auth::id() == $id) {
+        return redirect()->back()
+            ->with('error', 'Anda tidak dapat menghapus akun yang sedang digunakan.');
+    }
+
     $user = User::findOrFail($id);
+
+    if ($user->peminjaman()->where('status', 'Dipinjam')->exists()) {
+        return redirect()->back()
+            ->with('error', 'User ini masih memiliki peminjaman aktif, tidak bisa dihapus.');
+    }
 
     $user->delete();
 
