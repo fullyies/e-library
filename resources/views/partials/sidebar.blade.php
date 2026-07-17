@@ -36,6 +36,17 @@
             </li>
             @endif
 
+            <!-- Data Anggota (User): hanya admin -->
+            @if(Auth::user()->role == 'admin')
+            <li class="nav-item mb-2">
+                <a href="{{ route('user.index') }}"
+                   class="nav-link {{ request()->is('user*') ? 'bg-primary rounded text-white' : 'text-white' }}">
+                    <i class="fas fa-users me-2"></i>
+                    Data Anggota
+                </a>
+            </li>
+            @endif
+
             <!-- Peminjaman: admin lihat semua transaksi, user lihat riwayat sendiri -->
             @if(Auth::user()->role == 'admin')
             <li class="nav-item mb-2">

@@ -2,135 +2,72 @@
 
 @section('content')
 
-<h2>Tambah User</h2>
+<div class="container-fluid">
 
-<hr>
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-user-plus"></i>
+            Tambah User
+        </h2>
+    </div>
 
-<form action="{{ route('user.store') }}" method="POST">
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    @csrf
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Form Tambah User</h5>
+        </div>
 
-@if($errors->any())
+        <div class="card-body">
+            <form action="{{ route('user.store') }}" method="POST">
+                @csrf
 
-<div>
+                <div class="mb-3">
+                    <label class="form-label">Nama</label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                </div>
 
-    <ul>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" value="{{ old('username') }}">
+                </div>
 
-        @foreach($errors->all() as $error)
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                </div>
 
-        <li>{{ $error }}</li>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
 
-        @endforeach
+                <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <select name="role" class="form-select">
+                        <option value="admin">Admin</option>
+                        <option value="anggota">Anggota</option>
+                    </select>
+                </div>
 
-    </ul>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Simpan
+                </button>
+                <a href="{{ route('user.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </a>
+            </form>
+        </div>
+    </div>
 
 </div>
-
-@endif
-
-    <table>
-
-        <tr>
-
-            <td>Nama</td>
-
-            <td>
-
-                <input
-                    type="text"
-                    name="name"
-                    value="{{ old('name') }}">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Username</td>
-
-            <td>
-
-                <input
-                    type="text"
-                    name="username"
-                    value="{{ old('username') }}">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Email</td>
-
-            <td>
-
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Password</td>
-
-            <td>
-
-                <input
-                    type="password"
-                    name="password">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Role</td>
-
-            <td>
-
-                <select name="role">
-
-                    <option value="admin">
-
-                        Admin
-
-                    </option>
-
-                    <option value="anggota">
-
-                        Anggota
-
-                    </option>
-
-                </select>
-
-            </td>
-
-        </tr>
-
-    </table>
-
-    <br>
-
-    <button>
-
-        Simpan
-
-    </button>
-
-    <a href="{{ route('user.index') }}">
-
-        Kembali
-
-    </a>
-
-</form>
 
 @endsection

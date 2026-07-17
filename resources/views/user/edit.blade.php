@@ -2,142 +2,74 @@
 
 @section('content')
 
-<h2>Edit User</h2>
+<div class="container-fluid">
 
-<hr>
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            <i class="fas fa-user-edit"></i>
+            Edit User
+        </h2>
+    </div>
 
-@if($errors->any())
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-<div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Form Edit User</h5>
+        </div>
 
-    <ul>
+        <div class="card-body">
+            <form action="{{ route('user.update',$user->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-        @foreach($errors->all() as $error)
+                <div class="mb-3">
+                    <label class="form-label">Nama</label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name',$user->name) }}">
+                </div>
 
-        <li>{{ $error }}</li>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" value="{{ old('username',$user->username) }}">
+                </div>
 
-        @endforeach
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ old('email',$user->email) }}">
+                </div>
 
-    </ul>
+                <div class="mb-3">
+                    <label class="form-label">Password Baru</label>
+                    <input type="password" name="password" class="form-control">
+                    <small class="text-muted">Kosongkan jika tidak ingin mengubah password.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <select name="role" class="form-select">
+                        <option value="admin" {{ $user->role=='admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="anggota" {{ $user->role=='anggota' ? 'selected' : '' }}>Anggota</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update
+                </button>
+                <a href="{{ route('user.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </a>
+            </form>
+        </div>
+    </div>
 
 </div>
-
-@endif
-
-<form action="{{ route('user.update',$user->id) }}" method="POST">
-
-    @csrf
-    @method('PUT')
-
-    <table>
-
-        <tr>
-
-            <td>Nama</td>
-
-            <td>
-
-                <input
-                    type="text"
-                    name="name"
-                    value="{{ old('name',$user->name) }}">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Username</td>
-
-            <td>
-
-                <input
-                    type="text"
-                    name="username"
-                    value="{{ old('username',$user->username) }}">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Email</td>
-
-            <td>
-
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email',$user->email) }}">
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Password Baru</td>
-
-            <td>
-
-                <input
-                    type="password"
-                    name="password">
-
-                <br>
-
-                <small>Kosongkan jika tidak ingin mengubah password.</small>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Role</td>
-
-            <td>
-
-                <select name="role">
-
-                    <option value="admin"
-                        {{ $user->role=='admin' ? 'selected' : '' }}>
-
-                        Admin
-
-                    </option>
-
-                    <option value="anggota"
-                        {{ $user->role=='anggota' ? 'selected' : '' }}>
-
-                        Anggota
-
-                    </option>
-
-                </select>
-
-            </td>
-
-        </tr>
-
-    </table>
-
-    <br>
-
-    <button type="submit">
-
-        Update
-
-    </button>
-
-    <a href="{{ route('user.index') }}">
-
-        Kembali
-
-    </a>
-
-</form>
 
 @endsection
